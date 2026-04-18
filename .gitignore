@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+build/
+.vite/
+
+# pnpm
+.pnpm-store/
+
+# env
+.env
+.env.local
+.env.*.local
+
+# editor / IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Claude Code session data
+.claude/
+
+# test resources (calibration screenshots, generated PNGs)
+test_resources/
+
+# OS
+.DS_Store
+Thumbs.db

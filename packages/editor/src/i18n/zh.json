@@ -1,0 +1,13 @@
+{
+  "upload_hint":   "拖拽图片到此处，或点击上传",
+  "banner_label":  "横幅",
+  "avatar_label":  "头像",
+  "rotation":      "旋转",
+  "flip_h":        "水平翻转",
+  "flip_v":        "垂直翻转",
+  "reset":         "重置",
+  "download_btn":  "下载两张图片",
+  "download_tip":  "然后分别手动上传到 LinkedIn",
+  "preview_title": "预览",
+  "uncalibrated":  "头像位置尚未校准 — 请先运行校准流程。"
+}

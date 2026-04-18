@@ -1,0 +1,13 @@
+{
+  "upload_hint":   "Drop your photo here, or click to upload",
+  "banner_label":  "Banner",
+  "avatar_label":  "Profile Photo",
+  "rotation":      "Rotation",
+  "flip_h":        "Flip H",
+  "flip_v":        "Flip V",
+  "reset":         "Reset",
+  "download_btn":  "Download 2 images",
+  "download_tip":  "Then upload each to LinkedIn manually",
+  "preview_title": "Preview",
+  "uncalibrated":  "Avatar position not yet calibrated — run calibration first."
+}
