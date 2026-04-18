@@ -7,7 +7,25 @@
   "flip_v":        "Flip V",
   "reset":         "Reset",
   "download_btn":  "Download 2 images",
-  "download_tip":  "Then upload each to LinkedIn manually",
+  "download_tip":  "Images saved. Follow the steps below to upload them.",
   "preview_title": "Preview",
-  "uncalibrated":  "Avatar position not yet calibrated — run calibration first."
+  "change_photo":  "Change photo",
+  "uncalibrated":  "Avatar position not yet calibrated — overlay may be slightly off.",
+
+  "how_it_works": "How it works",
+  "steps": [
+    "Upload any photo you want to use.",
+    "Drag and zoom so the banner rectangle and avatar circle both look good.",
+    "Click \"Download 2 images\" — two files are saved: banner.jpg and avatar.jpg.",
+    "On LinkedIn, go to your profile and click the edit pencil on the background photo, then upload banner.jpg. Then click the edit pencil on your profile photo and upload avatar.jpg.",
+    "Done — your banner and profile photo will appear as one seamless image."
+  ],
+
+  "post_download_title": "Next: upload to LinkedIn",
+  "post_download_steps": [
+    "Go to your LinkedIn profile.",
+    "Click the pencil icon on your background banner → upload banner.jpg.",
+    "Click the pencil icon on your profile photo → upload avatar.jpg.",
+    "Accept the default crop without dragging — do not reposition."
+  ]
 }

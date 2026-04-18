@@ -9,6 +9,7 @@ import enStrings from './i18n/en.json';
 import zhStrings from './i18n/zh.json';
 
 type Lang = 'en' | 'zh';
+type Strings = typeof enStrings;
 
 interface Props {
   platform: PlatformConfig;
@@ -19,13 +20,14 @@ export function Editor({ platform }: Props) {
     try { return (localStorage.getItem('lang') as Lang) ?? 'en'; }
     catch { return 'en'; }
   });
-  const t = lang === 'zh' ? zhStrings : enStrings;
+  const t = lang === 'zh' ? (zhStrings as Strings) : enStrings;
 
   const [photoSrc, setPhotoSrc] = useState<string | null>(null);
   const [transform, setTransform] = useState<PhotoTransform>({
     translateX: 0, translateY: 0, scale: 1, rotation: 0, flipX: false, flipY: false,
   });
   const [exporting, setExporting] = useState(false);
+  const [exported, setExported] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -38,6 +40,7 @@ export function Editor({ platform }: Props) {
     const url = URL.createObjectURL(file);
     setPhotoSrc((prev) => { if (prev) URL.revokeObjectURL(prev); return url; });
     setError(null);
+    setExported(false);
   }, []);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
@@ -52,6 +55,7 @@ export function Editor({ platform }: Props) {
     setError(null);
     try {
       await exportImages(photoSrc, transform, platform, DISPLAY_W);
+      setExported(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -82,7 +86,17 @@ export function Editor({ platform }: Props) {
         <div style={styles.warn}>{t.uncalibrated}</div>
       )}
 
-      {/* Upload zone (shown before photo loaded) */}
+      {/* How it works — always visible */}
+      <div style={styles.guideBox}>
+        <div style={styles.guideTitle}>{t.how_it_works}</div>
+        <ol style={styles.guideList}>
+          {t.steps.map((step, i) => (
+            <li key={i} style={styles.guideItem}>{step}</li>
+          ))}
+        </ol>
+      </div>
+
+      {/* Upload zone */}
       {!photoSrc && (
         <div
           style={styles.dropzone}
@@ -105,10 +119,9 @@ export function Editor({ platform }: Props) {
       {photoSrc && (
         <div style={styles.editorArea}>
           <div style={styles.canvasCol}>
-            {/* Re-upload button */}
             <div style={{ marginBottom: 8 }}>
               <label style={styles.reuploadBtn}>
-                Change photo
+                {t.change_photo}
                 <input
                   type="file"
                   accept="image/*"
@@ -145,26 +158,47 @@ export function Editor({ platform }: Props) {
           />
         </div>
       )}
+
+      {/* Post-download instructions */}
+      {exported && (
+        <div style={styles.postDownload}>
+          <div style={styles.postDownloadTitle}>{t.post_download_title}</div>
+          <ol style={styles.guideList}>
+            {t.post_download_steps.map((step, i) => (
+              <li key={i} style={styles.guideItem}>{step}</li>
+            ))}
+          </ol>
+        </div>
+      )}
     </div>
   );
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  root: { fontFamily: 'system-ui, sans-serif', maxWidth: 1200, margin: '0 auto', padding: 20 },
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-  title:  { fontSize: 18, fontWeight: 700 },
+  root:       { fontFamily: 'system-ui, sans-serif', maxWidth: 1200, margin: '0 auto', padding: 20 },
+  header:     { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+  title:      { fontSize: 18, fontWeight: 700 },
   langToggle: { display: 'flex', gap: 6 },
-  langBtn: { background: 'none', border: '1px solid #ccc', borderRadius: 4, padding: '3px 10px', cursor: 'pointer', fontSize: 13 },
-  warn: { background: '#fff3cd', border: '1px solid #ffc107', borderRadius: 4, padding: '8px 12px', fontSize: 13, marginBottom: 12 },
+  langBtn:    { background: 'none', border: '1px solid #ccc', borderRadius: 4, padding: '3px 10px', cursor: 'pointer', fontSize: 13 },
+  warn:       { background: '#fff3cd', border: '1px solid #ffc107', borderRadius: 4, padding: '8px 12px', fontSize: 13, marginBottom: 12 },
+
+  guideBox:   { background: '#f8f9fa', border: '1px solid #e0e0e0', borderRadius: 8, padding: '14px 20px', marginBottom: 20 },
+  guideTitle: { fontWeight: 700, fontSize: 14, marginBottom: 8, color: '#333' },
+  guideList:  { margin: 0, paddingLeft: 22 },
+  guideItem:  { fontSize: 13, color: '#444', marginBottom: 5, lineHeight: 1.5 },
+
   dropzone: {
     border: '2px dashed #aaa', borderRadius: 8, padding: '60px 40px',
     textAlign: 'center', cursor: 'pointer', color: '#666', fontSize: 15,
   },
-  editorArea: { display: 'flex', gap: 24, alignItems: 'flex-start' },
-  canvasCol: { flex: 1, minWidth: 0 },
-  reuploadBtn: {
+  editorArea:   { display: 'flex', gap: 24, alignItems: 'flex-start' },
+  canvasCol:    { flex: 1, minWidth: 0 },
+  reuploadBtn:  {
     display: 'inline-block', padding: '5px 12px', background: '#f0f0f0',
     border: '1px solid #ccc', borderRadius: 4, cursor: 'pointer', fontSize: 13,
   },
   error: { color: '#c00', fontSize: 13, marginTop: 8 },
+
+  postDownload:      { background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: 8, padding: '14px 20px', marginTop: 24 },
+  postDownloadTitle: { fontWeight: 700, fontSize: 14, marginBottom: 8, color: '#2e7d32' },
 };
